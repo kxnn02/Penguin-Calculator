@@ -51,6 +51,49 @@ body {
     margin: auto;
 }
 
+/* --- THE PENGUIN PERSONALITY (EYES) --- */
+.eyes-container {
+    position: absolute;
+    top: 5.5%;  /* Positioned above the screen */
+    left: 31%;  /* Centered on the forehead */
+    width: 38%;
+    height: 8%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    pointer-events: none; /* Allows clicks to pass through to the background if needed */
+}
+
+.eye {
+    width: clamp(20px, 4vw, 40px);
+    height: clamp(20px, 4vw, 40px);
+    background-color: var(--penguin-white);
+    border: 2px solid var(--penguin-black);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    
+    /* The Blink Animation */
+    animation: blink 6s infinite;
+}
+
+.pupil {
+    width: 45%;
+    height: 45%;
+    background-color: var(--penguin-black);
+    border-radius: 50%;
+    transition: transform 0.2s ease-out;
+}
+
+/* Eye Animations */
+@keyframes blink {
+    0%, 93%, 100% { transform: scaleY(1); }
+    96.5% { transform: scaleY(0.1); }
+}
+
 /* Fallback for very wide screens where width might be the limiting factor */
 @media (min-aspect-ratio: 842/914) {
     .calculator-wrapper {
