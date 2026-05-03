@@ -54,7 +54,7 @@ body {
 /* --- THE PENGUIN PERSONALITY (EYES) --- */
 .eyes-container {
     position: absolute;
-    top: 5.5%;  /* Positioned above the screen */
+    top: 4.5%;  /* Positioned clearly above the screen frame */
     left: 31%;  /* Centered on the forehead */
     width: 38%;
     height: 8%;
