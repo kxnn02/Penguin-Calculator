@@ -71,3 +71,53 @@ const updateDisplay = () => {
     currentValueElement.innerText = currentOperand === "" ? "0" : currentOperand;
     previousMathElement.innerText = previousOperand;
 };
+
+const chooseOperation = selectedOperator => {
+    // If screen is empty, prevent user from clicking operators (+, -, etc)
+    if (currentOperand === "") {
+        return;
+    }
+
+    // If we have a previous number, calculate it 
+    // (This is how 5 + 5 + 5 becomes 10 + 5)
+    if (previousOperand !== "") {
+        compute(); // i will write this later 
+    }
+
+    // Store the operator the  user clicked
+    operation = selectedOperator;
+
+    // Move the current number to the previous box
+    previousOperand = currentOperand;
+
+    // Clear - Empty the current number box so they can type the next one
+    currentOperand = "";
+
+};
+
+// Event listener for the operator buttons
+operatorButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        chooseOperation(button.innerText);
+        updateDisplay();
+    })
+})
+
+const compute = () => {
+    // Check if operation or the currentOperad is empty
+    if (operation === null || currentOperand === "" || previousOperand === "") {
+        return;
+    }
+
+    // Do the math
+    const result = operate(operation, previousOperand, currentOperand);
+
+    currentOperand = result.toString();// Convert back to string so we can keep typing
+    operation = null;
+    previousOperand = "";
+};
+
+equalsButton.addEventListener("click", () => {
+    compute();
+    updateDisplay();
+});
