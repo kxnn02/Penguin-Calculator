@@ -41,7 +41,7 @@ body {
     
     aspect-ratio: 842 / 914; /* Maintain the Penguin shape */
     
-    background-image: url('Penguin-body.png');
+    background-image: url('assets/Penguin-body.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -134,26 +134,26 @@ body {
 
 /* Assigning Assets to Buttons */
 .btn-number, .btn-utility, .btn-operator {
-    background-image: url('button-small-1.png'); /* Default stone */
+    background-image: url('assets/button-small-1.png'); /* Default stone */
 }
 
 /* Variety for organic look */
 .btn-number:nth-child(odd) {
-    background-image: url('button-small-2.png');
+    background-image: url('assets/button-small-2.png');
 }
 
 .btn-number:nth-child(3n) {
-    background-image: url('button-small-3.png');
+    background-image: url('assets/button-small-3.png');
 }
 
 /* Special Button Assets */
 .btn-wide {
     grid-column: span 2;
-    background-image: url('Button medium.png') !important;
+    background-image: url('assets/Button medium.png') !important;
 }
 
 .btn-equals {
-    background-image: url('colored-button.png') !important;
+    background-image: url('assets/colored-button.png') !important;
     color: white;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
