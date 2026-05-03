@@ -1,0 +1,183 @@
+/* --- THE PENGUIN THEME --- */
+
+:root {
+    /* Colors */
+    --penguin-black: #2c3e50;
+    --penguin-white: #ffffff;
+    --ice-blue: #e0f7fa;
+    --gold: #f39c12;
+    --shadow: rgba(0, 0, 0, 0.2);
+    
+    /* Layout Constants (based on the original Penguin-body.png) */
+    --base-width: 842;
+    --base-height: 914;
+}
+
+/* 1. RESET & STAGE */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--ice-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    padding: 2vh;
+    overflow: hidden; /* Prevents stray scrollbars */
+}
+
+/* 2. THE PENGUIN CONTAINER */
+.calculator-wrapper {
+    /* Viewport Fitting Logic: */
+    /* Scale based on whichever is smaller: 90% of width or 90% of height */
+    width: auto;
+    height: 90vh; /* Primary constraint: fit height */
+    max-width: 90vw; /* Secondary constraint: don't overflow width */
+    
+    aspect-ratio: 842 / 914; /* Maintain the Penguin shape */
+    
+    background-image: url('Penguin-body.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    
+    /* Center the internal content if height is the limiting factor */
+    margin: auto;
+}
+
+/* Fallback for very wide screens where width might be the limiting factor */
+@media (min-aspect-ratio: 842/914) {
+    .calculator-wrapper {
+        height: 90vh;
+        width: auto;
+    }
+}
+
+@media (max-aspect-ratio: 842/914) {
+    .calculator-wrapper {
+        width: 90vw;
+        height: auto;
+    }
+}
+
+/* 3. THE DISPLAY SCREEN */
+.display-area {
+    position: absolute;
+    top: 14.5%;
+    left: 17%;
+    width: 66%;
+    height: 19%;
+    
+    background-color: rgba(255, 255, 255, 0.2); /* Glassmorphism look */
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 2% 5%;
+    color: var(--penguin-black);
+    overflow: hidden;
+}
+
+.previous-math {
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    opacity: 0.6;
+    height: 1.5em;
+}
+
+.current-value {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: bold;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+/* 4. THE KEYPAD GRID */
+.keypad {
+    position: absolute;
+    top: 39.5%;
+    left: 16%;
+    width: 68%;
+    height: 52%;
+    
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    gap: 2%; /* Responsive spacing */
+}
+
+/* 5. BUTTON STYLING (THE STONES) */
+.btn {
+    border: none;
+    background-color: transparent;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    
+    /* Text Styling */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(1rem, 3vw, 2rem);
+    font-weight: bold;
+    color: var(--penguin-black);
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+    
+    transition: transform 0.1s, filter 0.1s;
+}
+
+/* Assigning Assets to Buttons */
+.btn-number, .btn-utility, .btn-operator {
+    background-image: url('button-small-1.png'); /* Default stone */
+}
+
+/* Variety for organic look */
+.btn-number:nth-child(odd) {
+    background-image: url('button-small-2.png');
+}
+
+.btn-number:nth-child(3n) {
+    background-image: url('button-small-3.png');
+}
+
+/* Special Button Assets */
+.btn-wide {
+    grid-column: span 2;
+    background-image: url('Button medium.png') !important;
+}
+
+.btn-equals {
+    background-image: url('colored-button.png') !important;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Interactive States */
+.btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(1px) scale(0.98);
+    filter: brightness(0.9);
+}
+
+/* Special Logic for Utility Keys (AC, DEL, %) */
+.btn-utility {
+    color: var(--penguin-black); /* Matching the stones for cohesion */
+    opacity: 0.9; /* Subtle difference to show they are functional keys */
+}
+
+/* Accessibility: Keyboard focus state */
+.btn:focus {
+    outline: 2px solid var(--gold);
+    outline-offset: -5px;
+    border-radius: 10px;
+}
