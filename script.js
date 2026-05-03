@@ -28,3 +28,23 @@ const multiply = (a, b) => a * b;
 
 const divide = (a, b) => b == 0 ? "Error: Calculator Frozen" : a / b;
 
+// OPERATE function
+const operate = (operator, a, b) => {
+    // Convert a, b from strings to actual numbers 
+    const num1 = parseFloat(a);
+    const num2 = parseFloat(b);
+
+    switch (operator) {
+        case "+":
+            return add(num1, num2);
+        case "−":
+            return subtract(num1, num2);
+        case "×":
+            return multiply(num1, num2);
+        case "÷":
+            return divide(num1, num2)
+        default:
+            return null;
+    }
+}
+
