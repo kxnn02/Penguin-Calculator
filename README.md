@@ -2,7 +2,7 @@
 
 A visually stunning, responsive, and fully functional calculator built with HTML, CSS, and Vanilla JavaScript. This project was designed as a learning journey into responsive web design and complex state management.
 
-![Penguin Calculator Preview](Desktop%20-%201%20@Desktop%20-%201@2x.png)
+![Penguin Calculator Preview](assets/preview.png)
 
 ## 🌟 Features
 
