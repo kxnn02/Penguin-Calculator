@@ -48,3 +48,26 @@ const operate = (operator, a, b) => {
     }
 }
 
+const appendNumber = number => {
+    // prevent multiple decimal points
+    if (number === "." && currentOperand.includes(".")) {
+        return;
+    }
+
+    // Add the new number to the existing string 
+    currentOperand = currentOperand.toString() + number.toString();
+};
+
+// when a user click a number button, 
+numberButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        appendNumber(button.innerText);
+        updateDisplay();
+    });
+});
+
+const updateDisplay = () => {
+    // If currentOperand is empty, show '0', otherwise show currentOperand
+    currentValueElement.innerText = currentOperand === "" ? "0" : currentOperand;
+    previousMathElement.innerText = previousOperand;
+};
