@@ -65,8 +65,8 @@ body {
 }
 
 .eye {
-    width: clamp(20px, 4vw, 40px);
-    height: clamp(20px, 4vw, 40px);
+    width: clamp(25px, 5vw, 45px); /* Slightly larger for cuteness */
+    height: clamp(25px, 5vw, 45px);
     background-color: var(--penguin-white);
     border: 2px solid var(--penguin-black);
     border-radius: 50%;
@@ -75,17 +75,32 @@ body {
     align-items: center;
     position: relative;
     overflow: hidden;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.1); /* Subtle depth */
     
     /* The Blink Animation */
     animation: blink 6s infinite;
 }
 
 .pupil {
-    width: 45%;
-    height: 45%;
+    width: 55%; /* Larger pupils look friendlier */
+    height: 55%;
     background-color: var(--penguin-black);
     border-radius: 50%;
+    position: relative;
     transition: transform 0.2s ease-out;
+}
+
+/* The 'Cute' Factor: Add a white reflection highlight to the pupil */
+.pupil::after {
+    content: '';
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 35%;
+    height: 35%;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 0.8;
 }
 
 /* Eye Animations */
