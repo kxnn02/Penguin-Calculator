@@ -1,64 +1,139 @@
-// Display elements
+/**
+ * PENGUIN CALCULATOR LOGIC
+ * Hand-coded with ice-cool precision.
+ */
+
+// --- 1. DOM SELECTORS ---
+// Selecting display areas where numbers and operators appear
 const previousMathElement = document.getElementById("previous-math");
 const currentValueElement = document.getElementById("current-value");
 
-// Button groups
+// Selecting groups of buttons for bulk event listener attachment
 const numberButtons = document.querySelectorAll(".btn-number");
 const operatorButtons = document.querySelectorAll(".btn-operator");
 
-// Single utility buttons 
+// Selecting unique utility buttons for specific logic
 const equalsButton = document.getElementById("equals");
 const deleteButton = document.getElementById("backspace");
 const allClearButton = document.getElementById("clear");
 
-// State variables 
-let currentOperand = "";
-let previousOperand = "";
-let operation = null;
+// --- 2. CALCULATOR STATE ---
+// These variables track the 'memory' of the calculator during use
+let currentOperand = "";   // The number currently being typed (Room A)
+let previousOperand = "";  // The number waiting in storage (Room B)
+let operation = null;      // The selected math operator (+, -, etc.)
 
-// Arithmetic Functions 
-
-// Add number function
+// --- 3. CORE ARITHMETIC ENGINE ---
+// Pure functions that perform basic math on two numbers
 const add = (a, b) => a + b;
-
-// Subtract number function 
 const subtract = (a, b) => a - b;
-
 const multiply = (a, b) => a * b;
+const divide = (a, b) => (b === 0 ? "Error: Calculator Frozen" : a / b);
 
-const divide = (a, b) => b == 0 ? "Error: Calculator Frozen" : a / b;
-
-// OPERATE function
+/**
+ * The 'Brain' of the operation.
+ * Takes the stored values and routes them to the correct math function.
+ */
 const operate = (operator, a, b) => {
-    // Convert a, b from strings to actual numbers 
+    // Convert string inputs to actual numbers for math calculation
     const num1 = parseFloat(a);
     const num2 = parseFloat(b);
 
     switch (operator) {
-        case "+":
-            return add(num1, num2);
-        case "−":
-            return subtract(num1, num2);
-        case "×":
-            return multiply(num1, num2);
-        case "÷":
-            return divide(num1, num2)
-        default:
-            return null;
+        case "+": return add(num1, num2);
+        case "−": return subtract(num1, num2); // Matching the 'Em Dash' symbol from HTML
+        case "×": return multiply(num1, num2);
+        case "÷": return divide(num1, num2);
+        default: return null;
     }
 }
 
-const appendNumber = number => {
-    // prevent multiple decimal points
-    if (number === "." && currentOperand.includes(".")) {
-        return;
-    }
+// --- 4. INPUT LOGIC ---
 
-    // Add the new number to the existing string 
+/**
+ * Adds a digit to the current operand string.
+ * Includes a guard to prevent multiple decimal points.
+ */
+const appendNumber = (number) => {
+    // If user clicks a dot and we already have one, stop here.
+    if (number === "." && currentOperand.includes(".")) return;
+
+    // Convert to string to ensure we concatenate (1 + 2 = "12") instead of adding (1 + 2 = 3)
     currentOperand = currentOperand.toString() + number.toString();
 };
 
-// when a user click a number button, 
+/**
+ * Handles the logic when an operator (+, -, etc) is clicked.
+ * It moves the current number to storage to prepare for the next input.
+ */
+const chooseOperation = (selectedOperator) => {
+    // If no number has been typed yet, don't allow an operator
+    if (currentOperand === "") return;
+
+    // If there's already math waiting (e.g., 5 + 5 +), compute it first
+    if (previousOperand !== "") {
+        compute();
+    }
+
+    operation = selectedOperator;
+    previousOperand = currentOperand; // The 'Move' to storage
+    currentOperand = "";             // Clear the main input for the next number
+};
+
+/**
+ * The Final Act: Performs the math based on current state and displays the result.
+ */
+const compute = () => {
+    // Guard: Ensure we have all 3 pieces needed for a calculation
+    if (operation === null || currentOperand === "" || previousOperand === "") return;
+
+    const result = operate(operation, previousOperand, currentOperand);
+
+    // Set result as the current input so user can perform more math on it
+    currentOperand = result.toString();
+    
+    // Clear the memory for the next operation
+    operation = null;
+    previousOperand = "";
+};
+
+// --- 5. JANITOR FUNCTIONS (CLEANUP) ---
+
+/**
+ * Wipes all variables clean (Reset to Factory Settings)
+ */
+const clear = () => {
+    currentOperand = "";
+    previousOperand = "";
+    operation = null;
+}
+
+/**
+ * Removes only the last character typed (Backspace)
+ */
+const deleteNumber = () => {
+    currentOperand = currentOperand.toString().slice(0, -1);
+}
+
+// --- 6. DISPLAY SYNC ---
+
+/**
+ * Refreshes the HTML to match the current state variables.
+ * This is the only function that touches the user's screen.
+ */
+const updateDisplay = () => {
+    // Show '0' if screen is empty, otherwise show the current number
+    currentValueElement.innerText = currentOperand === "" ? "0" : currentOperand;
+    
+    // Show the previous number and the operator in the history area
+    previousMathElement.innerText = operation !== null 
+        ? `${previousOperand} ${operation}` 
+        : previousOperand;
+};
+
+// --- 7. EVENT LISTENERS ---
+
+// Digits
 numberButtons.forEach(button => {
     button.addEventListener("click", () => {
         appendNumber(button.innerText);
@@ -66,58 +141,28 @@ numberButtons.forEach(button => {
     });
 });
 
-const updateDisplay = () => {
-    // If currentOperand is empty, show '0', otherwise show currentOperand
-    currentValueElement.innerText = currentOperand === "" ? "0" : currentOperand;
-    previousMathElement.innerText = previousOperand;
-};
-
-const chooseOperation = selectedOperator => {
-    // If screen is empty, prevent user from clicking operators (+, -, etc)
-    if (currentOperand === "") {
-        return;
-    }
-
-    // If we have a previous number, calculate it 
-    // (This is how 5 + 5 + 5 becomes 10 + 5)
-    if (previousOperand !== "") {
-        compute(); // i will write this later 
-    }
-
-    // Store the operator the  user clicked
-    operation = selectedOperator;
-
-    // Move the current number to the previous box
-    previousOperand = currentOperand;
-
-    // Clear - Empty the current number box so they can type the next one
-    currentOperand = "";
-
-};
-
-// Event listener for the operator buttons
+// Operators (+, -, etc.)
 operatorButtons.forEach(button => {
     button.addEventListener("click", () => {
         chooseOperation(button.innerText);
         updateDisplay();
-    })
-})
+    });
+});
 
-const compute = () => {
-    // Check if operation or the currentOperad is empty
-    if (operation === null || currentOperand === "" || previousOperand === "") {
-        return;
-    }
-
-    // Do the math
-    const result = operate(operation, previousOperand, currentOperand);
-
-    currentOperand = result.toString();// Convert back to string so we can keep typing
-    operation = null;
-    previousOperand = "";
-};
-
+// Equals
 equalsButton.addEventListener("click", () => {
     compute();
+    updateDisplay();
+});
+
+// All Clear
+allClearButton.addEventListener("click", () => {
+    clear();
+    updateDisplay();
+});
+
+// Backspace
+deleteButton.addEventListener("click", () => {
+    deleteNumber();
     updateDisplay();
 });
